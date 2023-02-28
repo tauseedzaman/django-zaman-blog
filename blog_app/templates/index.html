@@ -55,39 +55,31 @@
             </div>
         </div>
         <div class="row">
-            {% if posts %}
-            {% for post in posts %}
+            {% if posts %} {% for post in posts %}
             <div class="col-lg-4 mb-4">
                 <div class="entry2">
-                    <a href="single.html"><img src="{{post.thumbnail}}" alt="Image" class="img-fluid rounded"></a>
+                    <a href="/post/{{post.slug}}"><img src="{{ post.thumbnail }}" alt="Image" class="img-fluid rounded"></a>
                     <div class="excerpt">
-                        <span class="post-category text-white bg-secondary mb-3">Politics</span>
-                        <h2><a href="single.html">{{post.title}}.</a></h2>
+                        <span class="post-category text-white bg-secondary mb-3">{{post.category|upper}}</span>
+                        <h2><a href="/post/{{post.slug}}">{{ post.title }}.</a></h2>
                         <div class="post-meta align-items-center text-left clearfix">
                             <figure class="author-figure mb-0 mr-3 float-left"><img src="/static/images/person_1.jpg" alt="Image" class="img-fluid"></figure>
-                            <span class="d-inline-block mt-1">By <a href="/">{{post.auther}}</a></span>
-                            <span>&nbsp;-&nbsp; {{post.created_at|date:"M, d, Y"}}</span>
+                            <span class="d-inline-block mt-1">By <a href="#">{{ post.auther }}</a></span>
+                            <span>&nbsp;-&nbsp;
+                                {{ post.created_at|date:"M, d, Y" }}</span>
                         </div>
-                        <p>{{post.content|slice:":200"}}.</p>
-                        <p><a href="">Read More</a></p>
+                        <p>{{ post.content|slice:":200" }}.</p>
+                        <p><a href="/post/{{post.slug}}">Read More</a></p>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-            {% else %}
+            {% endfor %} {% else %}
             <h4 class="text-center text-warning">No Posts fund.</h4>
             {% endif %}
         </div>
         <div class="row text-center pt-5 border-top">
             <div class="col-md-12">
-                <div class="custom-pagination">
-                    <span>1</span>
-                    <a href="/">2</a>
-                    <a href="/">3</a>
-                    <a href="/">4</a>
-                    <span>...</span>
-                    <a href="/">15</a>
-                </div>
+                {% include 'includes/pagination.html' %}
             </div>
         </div>
     </div>

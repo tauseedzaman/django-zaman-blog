@@ -5,11 +5,26 @@ from django.utils.text import slugify
 # post model
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse('posts', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return self.title
+
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
+    category = models.CharField(max_length=100)
     slug = models.SlugField(blank=True)
     thumbnail = models.FileField(upload_to='./static/uploads')
     auther = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        'blog_app.Category', related_name='category',default=None, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)

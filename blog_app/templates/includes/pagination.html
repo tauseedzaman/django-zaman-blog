@@ -1,0 +1,33 @@
+<div class="custom-pagination">
+  
+{% if posts.has_previous %}
+  <a href="?page={{ posts.previous_page_number }}"><<</a>
+
+  {% if posts.number > 3 %}
+    <a href="?page=1">1</a>
+    {% if posts.number > 4 %}
+      <span>...</span>
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% for num in posts.paginator.page_range %}
+  {% if posts.number == num %}
+    <a href="?page={{ num }}">{{ num }}</a>
+  {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+    <a href="?page={{ num }}">{{ num }}</a>
+  {% endif %}
+{% endfor %}
+
+{% if posts.has_next %}
+  {% if posts.number < posts.paginator.num_pages|add:'-3' %}
+<span>...</span>
+
+    <a href="?page={{ posts.paginator.num_pages }}">{{ posts.paginator.num_pages }}</a>
+  {% elif posts.number < posts.paginator.num_pages|add:'-2' %}
+    <a href="?page={{ posts.paginator.num_pages }}">{{ posts.paginator.num_pages }}</a>
+  {% endif %}
+
+  <a href="?page={{ posts.next_page_number }}">>></a>
+{% endif %}  
+</div>
