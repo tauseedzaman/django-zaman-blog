@@ -17,11 +17,6 @@
     <link rel="stylesheet" href="/static/css/aos.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/all.min.css">
-    
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
 </head>
 
 <body>
@@ -53,18 +48,8 @@
                                 <li><a href="/gallery">Gallery</a></li>
                                 <li><a href="/about">About Us</a></li>
                                 <li><a href="/contact">Contact Us</a></li>
-                                <li>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-danger">{{request.user.username}}</button>
-                                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                          <a class="dropdown-item" href="#">Profile</a>
-                                          <a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
-                                        </div>
-                                      </div>
-                                </li>
+                                <li><a href="/register">Register</a></li>
+                                <li><a href="/accounts/login">Login</a></li>
                                 <li class="d-none d-lg-inline-block"><a href="/" class="js-search-toggle"><span class="icon-search"></span></a></li>
                             </ul>
                         </nav>
@@ -122,7 +107,7 @@
                             Copyright &copy;
                             <script>
                                 document.write(new Date().getFullYear());
-                            </script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            </script> All rights reserved | Powered By <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://tauseedzaman.com" target="_blank">tauseedzaman</a>
 
                         </p>
                     </div>
