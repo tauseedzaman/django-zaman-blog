@@ -8,6 +8,9 @@ from django import forms
 from django.contrib import messages
 
 
+def profile(request):
+    return render(request, "profile.html");
+
 def login(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -23,7 +26,7 @@ def login(request):
 
         if his_error:
             return render(request, "registration/register.html", form_data)
-            
+
         return redirect("/home")
     return render(request, "auth/login.html")
 
