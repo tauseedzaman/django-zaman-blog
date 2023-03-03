@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -10,7 +10,6 @@ from django.contrib import messages
 
 def profile(request):
     if request.method == "POST":
-        # update profile
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
         username = request.POST.get("username")
@@ -150,6 +149,7 @@ def contact(request):
     return render(request, "contact.html")
 
 
+@login_required
 def post(request, slug):
     post = Post.objects.filter(slug=slug)
 
@@ -157,6 +157,16 @@ def post(request, slug):
         post = post.first()
     else:
         return HttpResponse("<h3>Page Not Found otherwise contact us</h3>")
+
+    if request.method == "POST":
+        # save comment and redirect back
+        comment = request.POST.get("comment")
+        comment = Comment(
+            content=comment, auther=request.user, post=post)
+        comment.save()
+        context = {'post': post}
+        messages.success(request, "Thanks for your comment.")
+        return render(request, "single.html", context)
 
     context = {'post': post}
     return render(request, "single.html", context)
