@@ -9,7 +9,32 @@ from django.contrib import messages
 
 
 def profile(request):
-    return render(request, "profile.html");
+    if request.method == "POST":
+        # update profile
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        his_error = False
+        if username == "" or email == "":
+            messages.error(request, "⚠ All fields are required.")
+            his_error = True
+
+        if his_error:
+            return render(request, "registration/profile.html", form_data)
+
+        id = request.user.id
+        user = User.objects.get(id=id)
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = username
+        user.save()
+        messages.success(request, "Profile Updated Successfully.")
+        return render(request, "profile.html")
+
+    return render(request, "profile.html")
+
 
 def login(request):
     if request.method == "POST":
@@ -29,12 +54,6 @@ def login(request):
 
         return redirect("/home")
     return render(request, "auth/login.html")
-
-
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ["username", 'email', "password"]
 
 
 def test(request):
