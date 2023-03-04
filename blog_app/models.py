@@ -61,3 +61,11 @@ class Comment(models.Model):
 class Subscribe(models.Model):
     email = models.EmailField(max_length=254)
     created_at = models.DateTimeField(auto_now=True)
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username

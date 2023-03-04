@@ -23,27 +23,47 @@ def subscribe(request):
         return redirect(request.META.get('HTTP_REFERER'))
     return HttpResponseNotFound(render(request, '404.html'))
 
+
 def profile(request):
-    if request.method == "POST":
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
-        username = request.POST.get("username")
-        email = request.POST.get("email")
+    if request.method == 'POST':
+        # Update user data
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
+
+        request.user.first_name = first_name
+        request.user.last_name = last_name
+        request.user.username = username
+        request.user.email = email
+
         his_error = False
-        if username == "" or email == "":
+        if first_name == "" or last_name == "" or username == "" or email == "":
             messages.error(request, "⚠ All fields are required.")
             his_error = True
 
         if his_error:
             return render(request, "registration/profile.html", form_data)
 
-        id = request.user.id
-        user = User.objects.get(id=id)
-        user.email = email
-        user.first_name = first_name
-        user.last_name = last_name
-        user.username = username
-        user.save()
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+        if form.is_valid():
+            form.save()
+        # Check if user has uploaded a new image
+        # if request.FILES.get('profile'):
+            # Delete old image if it exists
+            if request.user.UserProfile.profile_image:
+                request.user.UserProfile.profile_image.delete()
+
+            # Save new image
+            request.user.UserProfile.profile_image = request.FILES['profile']
+            request.user.UserProfile.save()
+
+        # Save user data
+        request.user.save()
+
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('profile')
+
         messages.success(request, "Profile Updated Successfully.")
         return render(request, "profile.html")
 

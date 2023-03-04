@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local development settings
+*.env
+*.log
+db.sqlite3
+media/
+
+# Static files
+staticfiles/
+assets/
+
+# Secret settings
+*.secret_key
+*.env
+
+# Virtual environment
+venv/
+env/
+
+# Package distribution
+dist/
+build/
+*.egg-info/
+
+# PyCharm files
+.idea/
+
+# VSCode files
+.vscode/
+
+# Other
+*.bak
+*.swp
+.DS_Store
