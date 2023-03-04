@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Post, Comment
+from django.http import HttpResponse, Http404,HttpResponseNotFound
+from .models import Post, Comment, Category
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django import forms
 from django.contrib import messages
+from django.db import models
+
+
+def view_404(request, exception):
+    return HttpResponseNotFound(render(request, '404.html'))
 
 
 def profile(request):
@@ -70,6 +75,9 @@ def test(request):
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
@@ -118,6 +126,9 @@ def register(request):
 
 # home page . load all posts
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+        
     posts = Post.objects.all()
     page = request.GET.get('page', 1)
 
@@ -138,7 +149,17 @@ def gallery(request):
 
 @login_required
 def home(request):
-    return render(request, "home.html")
+    posts = Post.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(posts, 3)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, "home.html", {'posts': posts})
 
 
 def about(request):
@@ -152,21 +173,40 @@ def contact(request):
 @login_required
 def post(request, slug):
     post = Post.objects.filter(slug=slug)
+    categories = Category.objects.annotate(post_count=models.Count('category'))
+    comments = ""
 
     if post.exists():
         post = post.first()
+        comments = Comment.objects.filter(post=post.id)
+
     else:
         return HttpResponse("<h3>Page Not Found otherwise contact us</h3>")
 
+    context = {'post': post, 'comments': comments,
+               'comments_count': comments.count(), 'categories': categories}
     if request.method == "POST":
         # save comment and redirect back
         comment = request.POST.get("comment")
         comment = Comment(
             content=comment, auther=request.user, post=post)
         comment.save()
-        context = {'post': post}
         messages.success(request, "Thanks for your comment.")
         return render(request, "single.html", context)
 
-    context = {'post': post}
     return render(request, "single.html", context)
+
+
+@login_required
+def category_posts(request, category):
+    category = Category.objects.filter(title=category)
+    if category.exists():
+        category = category.first()
+    posts = Post.objects.filter(category=category)
+
+    if not posts.exists():
+        return HttpResponseNotFound(render(request, '404.html'))
+
+    context = {'posts': posts, 'posts_count': posts.count(),
+               'category': category}
+    return render(request, "category-posts.html", context)

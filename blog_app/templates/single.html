@@ -28,20 +28,26 @@
                     <p>Category: <a href="single.html#">{{post.category}}</a>, <a href="single.html#">Travel</a> Tags: <a href="single.html#">#manila</a>, <a href="single.html#">#asia</a></p>
                 </div>
                 <div class="pt-5">
-                    <h3 class="mb-5">6 Comments</h3>
+                    {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    <h3 class="mb-5">{{comments_count}} Comments</h3>
                     <ul class="comment-list">
+                        {% for comment in comments %}
                         <li class="comment">
                             <div class="vcard">
                                 <img src="/static/images/person_1.jpg" alt="Image placeholder">
                             </div>
                             <div class="comment-body">
-                                <h3>Jean Doe</h3>
-                                <div class="meta">January 9, 2018 at 2:21pm</div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus,
-                                    nihil?
+                                <h3>{{comment.auther}}</h3>
+                                <div class="meta">{{ comment.created_at|date:"F j, Y" }} at {{ comment.created_at|time:"g:ia" }}</div>
+                                <p{{comment.content}}
                                 </p>
                             </div>
                         </li>
+                             {% endfor %}
                     </ul>
 
                     <div class="comment-form-wrap pt-5">
@@ -132,11 +138,9 @@
                 <div class="sidebar-box">
                     <h3 class="heading">Categories</h3>
                     <ul class="categories">
-                        <li><a href="single.html#">Food <span>(12)</span></a></li>
-                        <li><a href="single.html#">Travel <span>(22)</span></a></li>
-                        <li><a href="single.html#">Lifestyle <span>(37)</span></a></li>
-                        <li><a href="single.html#">Business <span>(42)</span></a></li>
-                        <li><a href="single.html#">Adventure <span>(14)</span></a></li>
+                        {% for category in categories %}
+                        <li><a href="/category/{{ category.title }}">{{category.title}} <span>({{ category.post_count }})</span></a></li>
+                        {% endfor %}
                     </ul>
                 </div>
 
@@ -162,51 +166,8 @@
         </div>
     </div>
 </section>
-<div class="site-section bg-light">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-12">
-                <h2>More Related Posts</h2>
-            </div>
-        </div>
-        <div class="row align-items-stretch retro-layout">
-            <div class="col-md-5 order-md-2">
-                <a href="single.html" class="hentry img-1 h-100 gradient" style="background-image: url('/static/images/img_4.jpg');">
-                    <span class="post-category text-white bg-danger">Travel</span>
-                    <div class="text">
-                        <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                        <span>February 12, 2019</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-7">
-                <a href="single.html" class="hentry img-2 v-height mb30 gradient" style="background-image: url('/static/images/img_1.jpg');">
-                    <span class="post-category text-white bg-success">Nature</span>
-                    <div class="text text-sm">
-                        <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                        <span>February 12, 2019</span>
-                    </div>
-                </a>
-                <div class="two-col d-block d-md-flex">
-                    <a href="single.html" class="hentry v-height img-2 gradient" style="background-image: url('/static/images/img_2.jpg');">
-                        <span class="post-category text-white bg-primary">Sports</span>
-                        <div class="text text-sm">
-                            <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                            <span>February 12, 2019</span>
-                        </div>
-                    </a>
-                    <a href="single.html" class="hentry v-height img-2 ml-auto gradient" style="background-image: url('/static/images/img_3.jpg');">
-                        <span class="post-category text-white bg-warning">Lifestyle</span>
-                        <div class="text text-sm">
-                            <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                            <span>February 12, 2019</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 <div class="site-section bg-lightx">
     <div class="container">
         <div class="row justify-content-center text-center">
