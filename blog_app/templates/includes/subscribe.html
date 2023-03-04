@@ -1,0 +1,24 @@
+<div class="site-section bg-lightx">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-md-5">
+                <div class="subscribe-1 ">
+                    <h2>Subscribe to our newsletter</h2>
+                    <p class="mb-5">Don't miss out on the latest news,  it's completely free! Enter your email address below to get started.</p>
+
+                    <form action="/add-subscriber" method="post" class="d-flex">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" required name="email" placeholder="Enter your email address">
+                        <input type="submit" class="btn btn-primary" value="Subscribe">
+                    </form>
+                    {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

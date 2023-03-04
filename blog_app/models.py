@@ -24,7 +24,7 @@ class Post(models.Model):
     thumbnail = models.FileField(upload_to='./static/uploads')
     auther = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(
-        'blog_app.Category', related_name='category',default=None, on_delete=models.CASCADE)
+        'blog_app.Category', related_name='category', default=None, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -56,3 +56,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Subscribe(models.Model):
+    email = models.EmailField(max_length=254)
+    created_at = models.DateTimeField(auto_now=True)

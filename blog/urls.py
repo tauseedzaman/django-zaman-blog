@@ -28,7 +28,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("profile", views.profile, name="profile"),
     path("category/<str:category>", views.category_posts, name="category_posts"),
-    path("test", views.test, name="test"),
+    path("add-subscriber", views.subscribe, name="subscribe"),
     # path("accounts/login", views.login, name="login"),
      path('accounts/', include('django.contrib.auth.urls')),
     path("home", views.home, name="home"),

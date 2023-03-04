@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404,HttpResponseNotFound
-from .models import Post, Comment, Category
+from django.http import HttpResponse, Http404, HttpResponseNotFound
+from .models import Post, Comment, Category, Subscribe
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -12,6 +12,16 @@ from django.db import models
 def view_404(request, exception):
     return HttpResponseNotFound(render(request, '404.html'))
 
+
+def subscribe(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        subscribe = Subscribe(email=email)
+        subscribe.save()
+        messages.success(
+            request, "Thank you for subscribing to our newsletter! You'll now receive updates on the latest news from our community.")
+        return redirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseNotFound(render(request, '404.html'))
 
 def profile(request):
     if request.method == "POST":
@@ -58,20 +68,6 @@ def login(request):
 
         return redirect("/home")
     return render(request, "auth/login.html")
-
-
-def test(request):
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        if form.is_valid():
-            try:
-                return redirect('/test')
-            except:
-                pass
-
-    else:
-        form = UserForm()
-    return render(request, 'test.html', {'form': form})
 
 
 def register(request):
@@ -128,7 +124,7 @@ def register(request):
 def index(request):
     if request.user.is_authenticated:
         return redirect('home')
-        
+
     posts = Post.objects.all()
     page = request.GET.get('page', 1)
 
