@@ -1,0 +1,25 @@
+<!-- templates/my_page.html -->
+
+{% extends "layouts/app.html" %} {% block title %}Categories{% endblock %} {% block content %}
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="row">
+            {% for category in categories %} {% comment %}
+            <div class=""> {% endcomment %}
+                <div class="col-md-3 m-3 card">
+                    <a href="/category/{{ category.title }}">
+                        <div class="card-header">
+                            <h5 class="card-title">{{ category.title|upper }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ Content }}</p>
+                            <a href="/category/{{ category.title }}">
+                                <span>({{ category.post_count }}) Posts</span>
+                        </div>
+                        </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% include 'includes/subscribe.html' %} {% endblock %}

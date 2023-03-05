@@ -1,9 +1,87 @@
 <!-- templates/my_page.html -->
 
-{% extends "layouts/app.html" %}
+{% extends "layouts/app.html" %} {% block title %}Contact us{% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <!--Section: Contact v.2-->
+            <section class="mb-4">
 
-{% block title %}Contact us{% endblock %}
+                <!--Section heading-->
+                <h2 class="h1-responsive font-weight-bold text-center my-4">Contact us</h2>
+                <!--Section description-->
+                <p class="text-center w-responsive mx-auto mb-5">Do you have any questions?<br> Please do not hesitate to contact us directly. <br> Our team will come back to you within a matter of hours to help you.</p>
 
-{% block content %}
-  <h1>Welcome to contact page!</h1>
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-9 mx-auto mb-md-0 mb-5">
+                        <form id="contact-form" name="" action="" method="POST">
+                            {% csrf_token %} {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+
+                            <!--Grid row-->
+                            <div class="row">
+
+                                <!--Grid column-->
+                                <div class="col-md-6 mt-4">
+                                    <div class="md-form mb-4">
+                                        <input type="text" placeholder="Your Name" required id="name" name="name" class="form-control">
+                                        <label for="name" class="">Your name</label>
+                                    </div>
+                                </div>
+                                <!--Grid column-->
+
+                                <!--Grid column-->
+                                <div class="col-md-6 mt-4">
+                                    <div class="md-form mb-4">
+                                        <input placeholder="Your Email" required type="text" id="email" name="email" class="form-control">
+                                        <label for="email" class="">Your email</label>
+                                    </div>
+                                </div>
+                                <!--Grid column-->
+
+                            </div>
+                            <!--Grid row-->
+
+                            <!--Grid row-->
+                            <div class="row ">
+                                <div class="col-md-12">
+                                    <div class="md-form mb-4">
+                                        <input type="text" placeholder="Subject" required id="subject" name="subject" class="form-control">
+                                        <label for="subject" class="">Subject</label>
+                                    </div>
+                                </div>
+                                <!--Grid row-->
+
+                                <!--Grid column-->
+                                <div class="col-md-12">
+
+                                    <div class="md-form mb-4">
+                                        <textarea type="text" placeholder="Your Message" required id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
+                                        <label for="message">Your message</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <button class="btn btn-success btn-lg" type="submit">Send</button>
+                            <!--Grid row-->
+
+
+                        </form>
+
+                        <div class="status"></div>
+                    </div>
+                    <!--Grid column-->
+
+                </div>
+
+            </section>
+            <!--Section: Contact v.2-->
+        </div>
+    </div>
+</div>
 {% endblock %}

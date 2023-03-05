@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseNotFound
-from .models import Post, Comment, Category, Subscribe
+from .models import Post, Comment, Category, Subscribe, Contact
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -11,6 +11,11 @@ from django.db import models
 
 def view_404(request, exception):
     return HttpResponseNotFound(render(request, '404.html'))
+
+
+def categories(request):
+    categories = Category.objects.annotate(post_count=models.Count('category'))
+    return render(request, 'categories.html', {'categories': categories})
 
 
 def subscribe(request):
@@ -45,7 +50,8 @@ def profile(request):
         if his_error:
             return render(request, "registration/profile.html", form_data)
 
-        form = ProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+        form = ProfileForm(request.POST, request.FILES,
+                           instance=request.user.userprofile)
         if form.is_valid():
             form.save()
         # Check if user has uploaded a new image
@@ -183,6 +189,21 @@ def about(request):
 
 
 def contact(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        subject = request.POST.get("subject")
+        message = request.POST.get("message")
+        if name == "" or email == "" or subject == "" or message == "":
+            messages.error(request, "All Fields are required.")
+            return render(request, "contact.html")
+        contact = Contact(name=name, email=email,
+                          subject=subject, message=message)
+        if contact:
+            contact.save()
+            messages.success(
+                request, "Thanks for your message our team will reply shortly.")
+            return render(request, "contact.html")
     return render(request, "contact.html")
 
 
