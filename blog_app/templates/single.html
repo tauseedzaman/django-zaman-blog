@@ -25,7 +25,13 @@
                     {{post.content}}
                 </div>
                 <div class="pt-5">
-                    <p>Category: <a href="single.html#">{{post.category}}</a>, <a href="single.html#">Travel</a> Tags: <a href="single.html#">#manila</a>, <a href="single.html#">#asia</a></p>
+                    <p>Category: <a href="/category/{{post.category}}">{{post.category}}</a> Tags:
+                        {% if post.tags.all %}
+                        {% for tag in  post.tags.all  %}
+                        <a href="/tags/{{tag.name}}">#{{tag.name}}</a>, 
+                    {% endfor %}
+                    {% endif %}
+                    </p>
                 </div>
                 <div class="pt-5">
                     {% for message in messages %}

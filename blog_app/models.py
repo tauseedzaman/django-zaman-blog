@@ -4,6 +4,11 @@ from django.utils.text import slugify
 # Create your models here.
 # post model
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
@@ -26,6 +31,7 @@ class Post(models.Model):
     category = models.ForeignKey(
         'blog_app.Category', related_name='category', default=None, on_delete=models.CASCADE)
     content = models.TextField()
+    tags = models.ManyToManyField(Tag, null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
 
