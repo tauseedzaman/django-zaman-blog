@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseNotFound
-from .models import Post, Comment, Category, Subscribe, Contact
+from .models import Post, Comment, Category, Subscribe, Contact, Tag
+from django.db.models import Count
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -211,6 +212,9 @@ def contact(request):
 def post(request, slug):
     post = Post.objects.filter(slug=slug)
     categories = Category.objects.annotate(post_count=models.Count('category'))
+    tags = Tag.objects.all()
+    popular_posts = Post.objects.annotate(
+        num_comments=Count('comments')).order_by('-num_comments')[:5]
     comments = ""
 
     if post.exists():
@@ -221,7 +225,7 @@ def post(request, slug):
         return HttpResponse("<h3>Page Not Found otherwise contact us</h3>")
 
     context = {'post': post, 'comments': comments,
-               'comments_count': comments.count(), 'categories': categories}
+               'comments_count': comments.count(), 'categories': categories, 'tags': tags, "popular_posts": popular_posts}
     if request.method == "POST":
         # save comment and redirect back
         comment = request.POST.get("comment")
