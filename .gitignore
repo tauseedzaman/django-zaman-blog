@@ -31,6 +31,7 @@ build/
 
 # VSCode files
 .vscode/
+static/uploads/
 
 # Other
 *.bak
