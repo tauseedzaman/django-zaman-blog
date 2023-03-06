@@ -247,3 +247,15 @@ def category_posts(request, category):
     context = {'posts': posts, 'posts_count': posts.count(),
                'category': category}
     return render(request, "category-posts.html", context)
+
+
+@login_required
+def tag_posts(request, tag):
+    posts = Post.objects.filter(tags=tag)
+
+    if not posts.exists():
+        return HttpResponseNotFound(render(request, '404.html'))
+
+    context = {'posts': posts, 'posts_count': posts.count(),
+               'tag': tag}
+    return render(request, "tag-posts.html", context)
