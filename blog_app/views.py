@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models.functions import Random
 from django.http import HttpResponse, Http404, HttpResponseNotFound
 from .models import Post, Comment, Category, Subscribe, Contact, Tag
 from django.db.models import Count
@@ -182,7 +183,9 @@ def home(request):
         users = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(request, "home.html", {'posts': posts})
+
+    random_posts = Post.objects.order_by(Random()).all()[:5]
+    return render(request, "home.html", {'posts': posts, 'random_posts': random_posts})
 
 
 def about(request):
