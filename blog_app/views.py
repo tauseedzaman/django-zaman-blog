@@ -164,7 +164,9 @@ def index(request):
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
 
-    return render(request, "index.html", {'posts': posts})
+    random_posts = Post.objects.order_by(Random()).all()[:5]
+
+    return render(request, "index.html", {'posts': posts,"random_posts":random_posts})
 
 
 def gallery(request):
